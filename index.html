@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google" content="notranslate" />
+    <title>系统加载中... - 聚速 API</title>
+    <meta name="title" content="聚速 API" />
+    <meta name="description" content="高性能 AI 接口服务与分发平台。" />
+    
+    <!-- 🌟 全局智能遮罩层 CSS（极速渲染，不依赖任何外部资源） -->
+    <style>
+      #global-splash {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #ffffff;
+        z-index: 999999; /* 保证永远在最上层 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        transition: opacity 0.4s ease; /* 退出时的丝滑淡出特效 */
+      }
+      .loading-spin {
+        width: 40px;
+        height: 40px;
+        border: 3px solid #e2e8f0;
+        border-top-color: #3b82f6;
+        border-radius: 50%;
+        animation: loading-dash 1s linear infinite;
+      }
+      .loading-text {
+        margin-top: 16px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #334155;
+        letter-spacing: 0.5px;
+      }
+      @keyframes loading-dash {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  <link rel="icon" href="/favicon.ico"><script defer src="/static/js/vendor-ui-primitives.1379b0ed86.js"></script><script defer src="/static/js/vendor-tanstack.1c1a4fe38c.js"></script><script defer src="/static/js/lib-react.b4421cb5e9.js"></script><script defer src="/static/js/4226.ce2d2f7e92.js"></script><script defer src="/static/js/index.43093a0f66.js"></script><link href="/static/css/4226.10e003a7e2.css" rel="stylesheet"><link href="/static/css/index.9db8042a5a.css" rel="stylesheet"></head>
+
+  <body>
+    <!-- 🌟 我们的 EpayGo 风格幕布 -->
+    <div id="global-splash">
+      <div class="loading-spin"></div>
+      <div class="loading-text">安全数据链路建立中...</div>
+    </div>
+
+    <!-- 🌟 React 真实的挂载点 -->
+    <div id="root" translate="no" class="notranslate"></div>
+
+    <!-- 🌟 智能侦测脚本：只在首页完全准备好时才撤掉幕布，完美掩护二次加载 -->
+    <script>
+      const splash = document.getElementById('global-splash');
+      const root = document.getElementById('root');
+
+      // 创建一个观察器，盯着 root 节点的变化
+      const observer = new MutationObserver(() => {
+        const htmlLength = root.innerHTML.length;
+        const textContent = root.innerText || "";
+
+        // 核心逻辑：如果 React 生成的代码量巨大（>500字符），且文字不再是"加载中..."，说明真页面出来了！
+        if (htmlLength > 500 && !textContent.includes('加载中...')) {
+          splash.style.opacity = '0'; // 触发淡出
+          setTimeout(() => {
+            splash.remove(); // 0.4秒动画结束后，彻底从内存销毁幕布
+          }, 400);
+          observer.disconnect(); // 停止侦测
+        }
+      });
+
+      // 启动侦测
+      observer.observe(root, { childList: true, subtree: true });
+    </script>
+  </body>
+</html>
